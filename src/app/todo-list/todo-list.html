@@ -1,1 +1,26 @@
-<p>todo-list works!</p>
+<ul class="flex flex-col gap-2">
+    @for (todo of todos(); track todo.id) {
+        <li class="group flex items-center justify-between py-3 px-2 rounded-lg hover:bg-zinc-800/30 transition-colors">
+            <div class="flex items-center gap-4 cursor-pointer flex-1" (click)="toggleTodo(todo.id)">
+                <div class="w-5 h-5 rounded flex items-center justify-center transition-colors border"
+                     [class]="todo.completed ? 'bg-zinc-100 border-zinc-100' : 'bg-transparent border-zinc-700 group-hover:border-zinc-500'">
+                    @if (todo.completed) {
+                        <svg class="w-3.5 h-3.5 text-zinc-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                        </svg>
+                    }
+                </div>
+                
+                <span class="text-base transition-colors"
+                      [class]="todo.completed ? 'text-zinc-600 line-through' : 'text-zinc-300'">
+                    {{todo.title}}
+                </span>
+            </div>
+        </li>
+    }
+    @empty {
+        <div class="flex flex-col items-center justify-center py-8 text-zinc-600">
+            <p class="text-sm">No tasks left.</p>
+        </div>
+    }
+</ul>

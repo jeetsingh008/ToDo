@@ -2,9 +2,11 @@ import { Component, inject, signal } from '@angular/core';
 import { ToDo } from "../../models/todo.model"
 import { TodoService } from '../../service/todo-service';
 import { form, required } from '@angular/forms/signals';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-todo-form',
-  imports: [],
+  standalone: true,
+  imports: [FormsModule],
   templateUrl: './todo-form.html',
   styleUrl: './todo-form.css',
 })
