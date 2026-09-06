@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ToDo } from "../../models/todo.model"
+import { TodoService } from '../../service/todo-service';
+import { form, required } from '@angular/forms/signals';
 @Component({
   selector: 'app-todo-form',
   imports: [],
@@ -7,9 +9,33 @@ import { ToDo } from "../../models/todo.model"
   styleUrl: './todo-form.css',
 })
 export class TodoForm {
-  task: ToDo = {
+  private readonly todoService = inject(TodoService);
+
+  readonly taskModel = signal<ToDo>({
     id: 0,
     title: "",
     completed: false
+  })
+
+  protected readonly myForm = form(this.taskModel, (schema) => {
+    required(schema.title);
+  })
+
+
+  handleSubmit(): void {
+    if(this.myForm().invalid()) return;
+
+    const newTodo: ToDo = {
+      ...this.taskModel(),
+      id: Date.now()
+    }
+
+    this.todoService.addTodo(newTodo);
+
+    this.taskModel.set({
+      id: 0,
+      title: '',
+      completed: false
+    })
   }
 }
